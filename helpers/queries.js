@@ -67,7 +67,8 @@ function addARole () {
         {
             type:'list',
             message: 'Please select the department the new role will fall under:',
-            choices: ['placeholder'],
+            // need to figure out how to pull choices from database dynamically
+            choices: ['Sales', 'Engineering', 'Finance', 'Legal'],
             name: 'role_department'
         }
     ])
@@ -77,10 +78,10 @@ function addARole () {
                 console.log(err);
             } else {
                 const department_id = results[0].id;
+                db.query(`INSERT INTO role (title, salary, department_id) VALUES ("${data.role_title}", "${data.role_salary}", "${department_id}");`, function (err, results) {
+                    err ? console.log(err) : console.log(`${data.role_title} has been added to the database.`);
+                });
             }
-        })
-        db.query(`INSERT INTO role (title, salary, department_id) VALUES ("${data.role_title}", "${data.role_salary}", "${department_id}");`, function (err, results) {
-            err ? console.log(err) : console.log(`${data.role_title} has been added to the database.`);
         });
     });
 }
