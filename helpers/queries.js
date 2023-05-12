@@ -117,7 +117,7 @@ async function addAnEmployee(init) {
         value: role.id,
       }
     });
-    const [managers] = await (await db).query("SELECT CONCAT(first_name, ' ', last_name) AS full_name, id FROM employee WHERE manager_id IS NULL");
+    const [managers] = await (await db).query("SELECT CONCAT(first_name, ' ', last_name) AS full_name, id FROM employee");
     const managerChoices = managers.map((manager) => {
       return {
         name: manager.full_name,
