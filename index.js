@@ -1,38 +1,49 @@
-const { viewAllDepartments, viewAllRoles, viewAllEmployees, addADepartment, addARole, addAnEmployee, updateEmployeeRole } = require('./queries');
+const { viewAllDepartments, viewAllRoles, viewAllEmployees, addADepartment, addARole, addAnEmployee, updateEmployeeRole, quit } = require('./helpers/queries');
 const inquirer = require("inquirer");
+const art = require('ascii-art');
 
 function handleUserInput (data) {
     const input = data.user_actions;
     switch (input) {
         case "View All Departments":
-            viewAllDepartments();
+            viewAllDepartments(init);
             return;
         case "View All Roles":
-            viewAllRoles();
+            viewAllRoles(init);
             return;
         case "View All Employees":
-            viewAllEmployees();
+            viewAllEmployees(init);
             return;
         case "Add A Department":
-            addADepartment();
+            addADepartment(init);
             return;
         case "Add A Role":
-            addARole();
+            addARole(init);
             return;
         case "Add An Employee": 
-            addAnEmployee();
+            addAnEmployee(init);
             return;
         case "Update An Employee Role":
-            updateEmployeeRole();
+            updateEmployeeRole(init);
             return;
-        // case "Quit":
-
+        case "Quit":
+            quit(init);
+            return;
     }
 }
 
-function init() {
-    inquirer
-      .prompt([
+async function renderArt() {
+    try{
+        let rendered = await art.font("Employee Manager", 'doom').completed()
+        console.log(rendered);
+        init();
+    }catch(err){
+      console.error(err);
+    }
+}
+
+async function init() {
+   const answers = await inquirer.prompt([
         {
           type: "list",
           message: "What would you like to do?",
@@ -48,10 +59,9 @@ function init() {
           ],
           name: "user_actions",
         },
-      ])
-      .then((data) => {
-        handleUserInput(data);
-      });
-  }
+      ]);
+       handleUserInput(answers);
+      };
 
-module.exports = init;
+      renderArt();
+  
